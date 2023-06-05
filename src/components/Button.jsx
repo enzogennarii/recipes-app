@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Button({
+  disabled = false,
   type = 'button',
   id = '',
   onClick = () => {},
@@ -9,6 +10,7 @@ function Button({
 }) {
   return (
     <button
+      disabled={ disabled }
       type={ type }
       id={ id }
       data-testid={ id }
@@ -24,6 +26,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   text: PropTypes.string,
   type: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default Button;

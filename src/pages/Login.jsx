@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -6,6 +6,20 @@ import Button from '../components/Button';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoginValid, setIsLoginValid] = useState(false);
+
+  const handleValidation = useCallback(() => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|com\.br|net)$/;
+    const isEmailValid = emailRegex.test(email);
+    const minCharPassword = 6;
+    const isPasswordValid = password.length > minCharPassword;
+
+    setIsLoginValid(isEmailValid && isPasswordValid);
+  }, [email, password]);
+
+  useEffect(() => {
+    handleValidation();
+  }, [handleValidation]);
 
   return (
     <section>
@@ -13,19 +27,20 @@ function Login() {
       <Input
         type="email"
         id="email-input"
-        onChange={ ({ target: { value } }) => setEmail(value) }
+        onChange={ ({ target }) => setEmail(target.value) }
         value={ email }
       />
 
       <Input
         type="password"
-        onChange={ ({ target: { value } }) => setPassword(value) }
+        onChange={ ({ target }) => setPassword(target.value) }
         id="password-input"
         value={ password }
       />
 
       <Button
         id="login-submit-btn"
+        disabled={ !isLoginValid }
         text="Logar"
         onClick={ () => {} }
       />
