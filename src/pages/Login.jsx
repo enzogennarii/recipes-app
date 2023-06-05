@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Input from '../components/Input';
 import Button from '../components/Button';
 
@@ -7,6 +8,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoginValid, setIsLoginValid] = useState(false);
+  const history = useHistory();
 
   const handleValidation = useCallback(() => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|com\.br|net)$/;
@@ -19,6 +21,7 @@ function Login() {
 
   const handleLogin = () => {
     localStorage.setItem('user', JSON.stringify({ email }));
+    history.push('/meals');
   };
 
   useEffect(() => {
