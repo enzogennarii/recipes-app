@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
+
+import { RecipeContext } from '../context';
+
 import Input from './Input';
 import Button from './Button';
-import { RecipeContext } from '../context';
 
 function SearchBar() {
   const {
-    setSearchOption,
-    searchText,
-    setSearchText,
     handleSearchRecipe,
+    searchText,
+    setSearchOption,
+    setSearchText,
   } = useContext(RecipeContext);
 
   return (
@@ -16,40 +18,49 @@ function SearchBar() {
       <Input
         id="search-input"
         name="searchText"
-        value={ searchText }
         onChange={ ({ target: { value } }) => setSearchText(value) }
+        placeholder="Search"
+        value={ searchText }
       />
+
       <label htmlFor="ingredient-search-radio">
         <Input
           id="ingredient-search-radio"
-          type="radio"
           name="searchOption"
-          value="Ingredient"
           onChange={ ({ target: { value } }) => setSearchOption(value) }
+          type="radio"
+          value="Ingredient"
         />
         Ingredient
       </label>
+
       <label htmlFor="name-search-radio">
         <Input
           id="name-search-radio"
-          type="radio"
           name="searchOption"
-          value="Name"
           onChange={ ({ target: { value } }) => setSearchOption(value) }
+          type="radio"
+          value="Name"
         />
         Name
       </label>
+
       <label htmlFor="first-letter-search-radio">
         <Input
           id="first-letter-search-radio"
-          type="radio"
           name="searchOption"
-          value="First letter"
           onChange={ ({ target: { value } }) => setSearchOption(value) }
+          type="radio"
+          value="First letter"
         />
         First letter
       </label>
-      <Button id="exec-search-btn" text="Pesquisar" onClick={ handleSearchRecipe } />
+
+      <Button
+        id="exec-search-btn"
+        onClick={ handleSearchRecipe }
+        text="Pesquisar"
+      />
     </div>
   );
 }

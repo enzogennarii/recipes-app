@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+
 import Input from '../components/Input';
 import Button from '../components/Button';
 
@@ -29,27 +29,30 @@ function Login() {
   }, [handleValidation]);
 
   return (
-    <section>
-      Login
+    <section className="page-login">
+      <h1>Login</h1>
+
       <Input
-        type="email"
         id="email-input"
         onChange={ ({ target }) => setEmail(target.value) }
+        placeholder="Email"
+        type="email"
         value={ email }
       />
 
       <Input
-        type="password"
-        onChange={ ({ target }) => setPassword(target.value) }
         id="password-input"
+        onChange={ ({ target }) => setPassword(target.value) }
+        placeholder="Password"
+        type="password"
         value={ password }
       />
 
       <Button
-        id="login-submit-btn"
         disabled={ !isLoginValid }
-        text="Logar"
+        id="login-submit-btn"
         onClick={ handleLogin }
+        text="Login"
       />
     </section>
   );

@@ -3,9 +3,9 @@ import Header from '../components/Header';
 
 function DoneRecipes() {
   return (
-    <div>
+    <section className="page-done-recipes">
       <Header title="Done Recipes" />
-    </div>
+    </section>
   );
 }
 

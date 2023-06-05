@@ -3,9 +3,9 @@ import Header from '../components/Header';
 
 function FavoriteRecipes() {
   return (
-    <div>
+    <section className="page-favorite-recipes">
       <Header title="Favorite Recipes" />
-    </div>
+    </section>
   );
 }
 
