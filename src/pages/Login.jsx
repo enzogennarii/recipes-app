@@ -17,6 +17,10 @@ function Login() {
     setIsLoginValid(isEmailValid && isPasswordValid);
   }, [email, password]);
 
+  const handleLogin = () => {
+    localStorage.setItem('user', JSON.stringify({ email }));
+  };
+
   useEffect(() => {
     handleValidation();
   }, [handleValidation]);
@@ -42,7 +46,7 @@ function Login() {
         id="login-submit-btn"
         disabled={ !isLoginValid }
         text="Logar"
-        onClick={ () => {} }
+        onClick={ handleLogin }
       />
     </section>
   );
