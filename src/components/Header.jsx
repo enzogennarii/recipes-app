@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
-import Input from './Input';
+import SearchBar from './SearchBar';
 
 function Header({ title }) {
   const hasSearch = ['Meals', 'Drinks'].includes(title);
@@ -26,9 +26,7 @@ function Header({ title }) {
         )
       }
       {
-        isSearching && (
-          <Input id="search-input" />
-        )
+        isSearching && <SearchBar />
       }
     </div>
   );
