@@ -11,10 +11,12 @@ function RecipeProvider({ children }) {
 
   const [searchOption, setSearchOption] = useState('');
   const [searchText, setSearchText] = useState('');
-  const [recipes, setRecipes] = useState([]);
   const [pageName, setPageName] = useState('');
+  const [recipes, setRecipes] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  const MAX_ARRAY_LENGTH = 12;
+  const MAX_RECIPES_LENGTH = 12;
+  const MAX_CATEGORIES_LENGTH = 5;
 
   const fetchInitialRecipes = useCallback(async () => {
     let URL = '';
@@ -29,15 +31,36 @@ function RecipeProvider({ children }) {
       const response = await fetchData(URL);
       data = response.drinks;
     }
-    if (data.length > MAX_ARRAY_LENGTH) {
-      data = data.splice(0, MAX_ARRAY_LENGTH);
+    if (data.length > MAX_RECIPES_LENGTH) {
+      data = data.splice(0, MAX_RECIPES_LENGTH);
     }
     setRecipes(data);
   }, [fetchData, pageName]);
 
+  const fetchRecipeCategories = useCallback(async () => {
+    let URL = '';
+    let data = [];
+    if (pageName === 'Meals') {
+      URL = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
+      const response = await fetchData(URL);
+      data = response.meals;
+    }
+    if (pageName === 'Drinks') {
+      URL = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list';
+      const response = await fetchData(URL);
+      data = response.drinks;
+    }
+    data = data.splice(0, MAX_CATEGORIES_LENGTH);
+    data = data.map((category) => category.strCategory);
+    setCategories(data);
+  }, [fetchData, pageName]);
+
   useEffect(() => {
-    if (pageName) fetchInitialRecipes();
-  }, [pageName, fetchInitialRecipes]);
+    if (pageName) {
+      fetchInitialRecipes();
+      fetchRecipeCategories();
+    }
+  }, [pageName, fetchInitialRecipes, fetchRecipeCategories]);
 
   const handleSearchMeals = useCallback(async () => {
     let URL = '';
@@ -60,8 +83,8 @@ function RecipeProvider({ children }) {
       return;
     }
 
-    if (data.meals.length > MAX_ARRAY_LENGTH) {
-      const splicedRecipes = data.meals.splice(0, MAX_ARRAY_LENGTH);
+    if (data.meals.length > MAX_RECIPES_LENGTH) {
+      const splicedRecipes = data.meals.splice(0, MAX_RECIPES_LENGTH);
       setRecipes(splicedRecipes);
       return;
     }
@@ -92,9 +115,8 @@ function RecipeProvider({ children }) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
       return;
     }
-    const maxArrayLength = 12;
-    if (data.drinks.length > maxArrayLength) {
-      const splicedRecipes = data.drinks.splice(0, maxArrayLength);
+    if (data.drinks.length > MAX_RECIPES_LENGTH) {
+      const splicedRecipes = data.drinks.splice(0, MAX_RECIPES_LENGTH);
       setRecipes(splicedRecipes);
       return;
     }
@@ -122,12 +144,14 @@ function RecipeProvider({ children }) {
     searchText,
     setSearchText,
     setPageName,
+    categories,
   }), [
     handleSearchRecipe,
     recipes,
     searchText,
     isLoading,
     errorMessage,
+    categories,
   ]);
 
   return (
