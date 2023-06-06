@@ -4,16 +4,18 @@ import PropTypes from 'prop-types';
 function Input({
   id = '',
   name = '',
+  onChange = () => {},
+  placeholder = '',
   type = 'text',
   value = '',
-  onChange = () => {},
 }) {
   return (
     <input
-      id={ id }
       data-testid={ id }
-      onChange={ onChange }
+      id={ id }
       name={ name }
+      onChange={ onChange }
+      placeholder={ placeholder }
       type={ type }
       value={ value }
     />
@@ -21,11 +23,12 @@ function Input({
 }
 
 Input.propTypes = {
-  name: PropTypes.string,
   id: PropTypes.string,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  placeholder: PropTypes.string,
   type: PropTypes.string,
   value: PropTypes.string,
-  onChange: PropTypes.func,
 };
 
 export default Input;

@@ -1,6 +1,7 @@
-import PropTypes from 'prop-types';
 import React, { useMemo, useState } from 'react';
-import { userContext } from '.';
+import PropTypes from 'prop-types';
+
+import { UserContext } from '.';
 
 function UserProvider({ children }) {
   const [userEmail, setUserEmail] = useState('');
@@ -13,9 +14,9 @@ function UserProvider({ children }) {
   ]);
 
   return (
-    <userContext.Provider value={ value }>
+    <UserContext.Provider value={ value }>
       {children}
-    </userContext.Provider>
+    </UserContext.Provider>
   );
 }
 

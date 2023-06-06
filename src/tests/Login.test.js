@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './helpers/renderWithRouter';
 
 import App from '../App';
+import UserProvider from '../context/UserProvider';
+import RecipeProvider from '../context/RecipeProvider';
 
 describe('Testes da página de Login', () => {
   const EMAIL_ID = 'email-input';
@@ -12,7 +14,13 @@ describe('Testes da página de Login', () => {
   const BTN_LOGIN_ID = 'login-submit-btn';
 
   it('Testa se os elementos são renderizados corretamente na tela', () => {
-    renderWithRouter(<App />);
+    renderWithRouter(
+      <UserProvider>
+        <RecipeProvider>
+          <App />
+        </RecipeProvider>
+      </UserProvider>,
+    );
 
     const emailInput = screen.getByTestId(EMAIL_ID);
     const passwordInput = screen.getByTestId(PASSWORD_ID);
@@ -24,7 +32,13 @@ describe('Testes da página de Login', () => {
   });
 
   it('Testa se o botão de login só está ativado quando o formulário é preenchido corretamente', () => {
-    renderWithRouter(<App />);
+    renderWithRouter(
+      <UserProvider>
+        <RecipeProvider>
+          <App />
+        </RecipeProvider>
+      </UserProvider>,
+    );
 
     const emailInput = screen.getByTestId(EMAIL_ID);
     const passwordInput = screen.getByTestId(PASSWORD_ID);
@@ -44,7 +58,13 @@ describe('Testes da página de Login', () => {
   });
 
   it('Testa se ao submeter o formulário corretamente, é redirecionado para a página de receitas', () => {
-    const { history } = renderWithRouter(<App />);
+    const { history } = renderWithRouter(
+      <UserProvider>
+        <RecipeProvider>
+          <App />
+        </RecipeProvider>
+      </UserProvider>,
+    );
 
     const emailInput = screen.getByTestId(EMAIL_ID);
     const passwordInput = screen.getByTestId(PASSWORD_ID);
