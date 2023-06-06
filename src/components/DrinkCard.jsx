@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 function DrinkCard({ recipe, index }) {
-  console.log(recipe);
   return (
     <div data-testid={ `${index}-recipe-card` }>
       <h2 data-testid={ `${index}-card-name` }>{recipe.strDrink}</h2>

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
@@ -13,6 +13,31 @@ function RecipeProvider({ children }) {
   const [searchText, setSearchText] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [pageName, setPageName] = useState('');
+
+  const MAX_ARRAY_LENGTH = 12;
+
+  const fetchInitialRecipes = useCallback(async () => {
+    let URL = '';
+    let data = null;
+    if (pageName === 'Meals') {
+      URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+      const response = await fetchData(URL);
+      data = response.meals;
+    }
+    if (pageName === 'Drinks') {
+      URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+      const response = await fetchData(URL);
+      data = response.drinks;
+    }
+    if (data.length > MAX_ARRAY_LENGTH) {
+      data = data.splice(0, MAX_ARRAY_LENGTH);
+    }
+    setRecipes(data);
+  }, [fetchData, pageName]);
+
+  useEffect(() => {
+    if (pageName) fetchInitialRecipes();
+  }, [pageName, fetchInitialRecipes]);
 
   const handleSearchMeals = useCallback(async () => {
     let URL = '';
@@ -34,9 +59,9 @@ function RecipeProvider({ children }) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
       return;
     }
-    const maxArrayLength = 12;
-    if (data.meals.length > maxArrayLength) {
-      const splicedRecipes = data.meals.splice(0, maxArrayLength);
+
+    if (data.meals.length > MAX_ARRAY_LENGTH) {
+      const splicedRecipes = data.meals.splice(0, MAX_ARRAY_LENGTH);
       setRecipes(splicedRecipes);
       return;
     }

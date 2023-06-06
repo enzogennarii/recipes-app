@@ -2,20 +2,16 @@
 import React, { useContext, useEffect } from 'react';
 import Header from '../components/Header';
 import { RecipeContext } from '../context';
-import MealCard from '../components/MealCard';
+import Recipes from '../components/Recipes';
 
 function Meals() {
   const title = 'Meals';
-  const { setPageName, recipes } = useContext(RecipeContext);
+  const { setPageName } = useContext(RecipeContext);
   useEffect(() => setPageName(title), []);
   return (
     <section className="page-meals">
       <Header title={ title } />
-      {
-        recipes.map((meal, i) => (
-          <MealCard key={ meal.idMeal } recipe={ meal } index={ i } />
-        ))
-      }
+      <Recipes title={ title } />
     </section>
   );
 }
