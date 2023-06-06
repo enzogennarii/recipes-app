@@ -182,7 +182,6 @@ function RecipeProvider({ children }) {
       fetchInitialRecipes();
       fetchRecipeCategories();
     }
-    console.log(categories);
   }, [pageName, fetchInitialRecipes, fetchRecipeCategories]);
 
   const values = useMemo(() => ({
