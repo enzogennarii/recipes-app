@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import Header from '../components/Header';
 import Button from '../components/Button';
+import Footer from '../components/Footer';
 
 function Profile() {
   const [userEmail, setUserEmail] = useState('');
@@ -19,7 +20,9 @@ function Profile() {
 
   useEffect(() => {
     const userLocalStorage = JSON.parse(localStorage.getItem('user'));
-    setUserEmail(userLocalStorage.email);
+    if (userLocalStorage) {
+      setUserEmail(userLocalStorage.email);
+    }
   }, []);
 
   return (
@@ -44,6 +47,8 @@ function Profile() {
         onClick={ userLogout }
         text="Logout"
       />
+
+      <Footer />
     </section>
   );
 }
