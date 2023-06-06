@@ -9,6 +9,8 @@ import RecipeProvider from '../context/RecipeProvider';
 import App from '../App';
 
 describe('Testes do componente SearchBar', () => {
+  const SEARCH_INPUT = 'search-input';
+
   it('Verifica se é possível realizar uma busca por ingrediente', () => {
     renderWithRouter(
       <UserProvider>
@@ -23,7 +25,7 @@ describe('Testes do componente SearchBar', () => {
       name: /procurar/i,
     });
     userEvent.click(searchIcon);
-    const searchInput = screen.getByTestId('search-input');
+    const searchInput = screen.getByTestId(SEARCH_INPUT);
     const ingredientRadio = screen.getByText(/ingredient/i);
     const searchBtn = screen.getByRole('button', {
       name: /pesquisar/i,
@@ -47,7 +49,7 @@ describe('Testes do componente SearchBar', () => {
       name: /procurar/i,
     });
     userEvent.click(searchIcon);
-    const searchInput = screen.getByTestId('search-input');
+    const searchInput = screen.getByTestId(SEARCH_INPUT);
     const nameRadio = screen.getByText(/name/i);
     const searchBtn = screen.getByRole('button', {
       name: /pesquisar/i,
@@ -71,7 +73,7 @@ describe('Testes do componente SearchBar', () => {
       name: /procurar/i,
     });
     userEvent.click(searchIcon);
-    const searchInput = screen.getByTestId('search-input');
+    const searchInput = screen.getByTestId(SEARCH_INPUT);
     const firstLetterRadio = screen.getByText(/first letter/i);
     const searchBtn = screen.getByRole('button', {
       name: /pesquisar/i,
