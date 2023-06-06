@@ -3,8 +3,6 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { renderWithRouter } from './helpers/renderWithRouter';
-import UserProvider from '../context/UserProvider';
-import RecipeProvider from '../context/RecipeProvider';
 
 import App from '../App';
 
@@ -13,11 +11,7 @@ describe('Testes do componente SearchBar', () => {
 
   it('Verifica se é possível realizar uma busca por ingrediente', () => {
     renderWithRouter(
-      <UserProvider>
-        <RecipeProvider>
-          <App />
-        </RecipeProvider>
-      </UserProvider>,
+      <App />,
       { initialEntries: ['/meals'] },
     );
 
@@ -37,11 +31,7 @@ describe('Testes do componente SearchBar', () => {
   });
   it('Verifica se é possível realizar uma busca por nome', () => {
     renderWithRouter(
-      <UserProvider>
-        <RecipeProvider>
-          <App />
-        </RecipeProvider>
-      </UserProvider>,
+      <App />,
       { initialEntries: ['/meals'] },
     );
 
@@ -61,11 +51,7 @@ describe('Testes do componente SearchBar', () => {
   });
   it('Verifica se é possível realizar uma busca por primeira letra', () => {
     renderWithRouter(
-      <UserProvider>
-        <RecipeProvider>
-          <App />
-        </RecipeProvider>
-      </UserProvider>,
+      <App />,
       { initialEntries: ['/meals'] },
     );
 
