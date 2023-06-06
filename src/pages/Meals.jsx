@@ -8,7 +8,9 @@ import Footer from '../components/Footer';
 function Meals() {
   const title = 'Meals';
   const { setPageName } = useContext(RecipeContext);
+
   useEffect(() => setPageName(title), []);
+
   return (
     <section className="page-meals">
       <Header title={ title } />

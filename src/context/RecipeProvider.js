@@ -55,13 +55,6 @@ function RecipeProvider({ children }) {
     setCategories(data);
   }, [fetchData, pageName]);
 
-  useEffect(() => {
-    if (pageName) {
-      fetchInitialRecipes();
-      fetchRecipeCategories();
-    }
-  }, [pageName, fetchInitialRecipes, fetchRecipeCategories]);
-
   const handleSearchMeals = useCallback(async () => {
     let URL = '';
     if (searchOption === 'Ingredient') {
@@ -135,6 +128,33 @@ function RecipeProvider({ children }) {
     handleSearchDrinks();
   }, [handleSearchDrinks, handleSearchMeals, pageName]);
 
+  const filterByCategory = useCallback(async ({ target: { name } }) => {
+    let URL = '';
+    let data = null;
+
+    if (pageName === 'Meals') {
+      URL = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${name}`;
+      const response = await fetchData(URL);
+      data = response.meals;
+    }
+    if (pageName === 'Drinks') {
+      URL = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${name}`;
+      const response = await fetchData(URL);
+      data = response.drinks;
+    }
+    if (data.length > MAX_RECIPES_LENGTH) {
+      data = data.splice(0, MAX_RECIPES_LENGTH);
+    }
+    setRecipes(data);
+  }, [fetchData, pageName]);
+
+  useEffect(() => {
+    if (pageName) {
+      fetchInitialRecipes();
+      fetchRecipeCategories();
+    }
+  }, [pageName, fetchInitialRecipes, fetchRecipeCategories]);
+
   const values = useMemo(() => ({
     isLoading,
     errorMessage,
@@ -145,6 +165,8 @@ function RecipeProvider({ children }) {
     setSearchText,
     setPageName,
     categories,
+    filterByCategory,
+    fetchInitialRecipes,
   }), [
     handleSearchRecipe,
     recipes,
@@ -152,6 +174,8 @@ function RecipeProvider({ children }) {
     isLoading,
     errorMessage,
     categories,
+    filterByCategory,
+    fetchInitialRecipes,
   ]);
 
   return (
