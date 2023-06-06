@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import Header from '../components/Header';
 import { RecipeContext } from '../context';
 import Recipes from '../components/Recipes';
+import Footer from '../components/Footer';
 
 function Drinks() {
   const title = 'Drinks';
@@ -12,6 +13,7 @@ function Drinks() {
     <section className="page-drinks">
       <Header title={ title } />
       <Recipes title={ title } />
+      <Footer />
     </section>
   );
 }
