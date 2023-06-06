@@ -9,17 +9,18 @@ import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 
 import './App.css';
+import RecipeDetails from './pages/RecipeDetails';
 
 function App() {
   return (
     <section className="App">
       <Switch>
         <Route exact path="/" component={ Login } />
-        <Route path="/meals" component={ Meals } />
-        <Route path="/drinks" component={ Drinks } />
-        {/* <Route path="/meals/:id-da-receita" component={} />
-        <Route path="/drinks/:id-da-receita" component={} />
-        <Route path="/meals/:id-da-receita/in-progress" component={} />
+        <Route exact path="/meals" component={ Meals } />
+        <Route exact path="/drinks" component={ Drinks } />
+        <Route exact path="/meals/:idMeal" component={ RecipeDetails } />
+        <Route exact path="/drinks/:idDrink" component={ RecipeDetails } />
+        {/* <Route path="/meals/:id-da-receita/in-progress" component={} />
         <Route path="/drinks/:id-da-receita/in-progress" component={} /> */}
         <Route path="/profile" component={ Profile } />
         <Route path="/done-recipes" component={ DoneRecipes } />
