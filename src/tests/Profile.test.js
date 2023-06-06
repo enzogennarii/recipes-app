@@ -82,4 +82,11 @@ describe('Testes da página de Login', () => {
 
     expect(history.location.pathname).toBe('/');
   });
+
+  it('Entra na página de profile sem fazer login', () => {
+    renderWithRouter(
+      <App />,
+      { initialEntries: ['/profile'] },
+    );
+  });
 });
