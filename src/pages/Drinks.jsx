@@ -12,7 +12,7 @@ function Drinks() {
   return (
     <section className="page-drinks">
       <Header title={ title } />
-      <Recipes title={ title } />
+      <Recipes />
       <Footer />
     </section>
   );
