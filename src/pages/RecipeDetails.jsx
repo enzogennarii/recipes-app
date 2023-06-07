@@ -80,11 +80,34 @@ function RecipeDetails() {
     }
     setIsInProgressRecipe(false);
   };
+
   const handleShareRecipe = () => {
     const path = 'http://localhost:3000';
     copy(path + history.location.pathname);
     setIsSharedRecipe(true);
   };
+
+  const handleFavoriteRecipe = () => {
+    const recipeToFavorite = {
+      id: recipeType === 'meals' ? recipe.idMeal : recipe.idDrink,
+      type: recipeType === 'meals' ? 'meal' : 'drink',
+      nationality: recipeType === 'meals' ? recipe.strArea : '',
+      category: recipe.strCategory,
+      alcoholicOrNot: recipeType === 'drinks' ? recipe.strAlcoholic : '',
+      name: recipeType === 'meals' ? recipe.strMeal : recipe.strDrink,
+      image: recipeType === 'meals' ? recipe.strMealThumb : recipe.strDrinkThumb,
+    };
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (favoriteRecipes) {
+      localStorage.setItem(
+        'favoriteRecipes',
+        JSON.stringify([...favoriteRecipes, recipeToFavorite]),
+      );
+      return;
+    }
+    localStorage.setItem('favoriteRecipes', JSON.stringify([recipeToFavorite]));
+  };
+
   useEffect(() => {
     fetchRecipe();
   }, []);
@@ -99,6 +122,7 @@ function RecipeDetails() {
   }, [recipe]);
 
   if (recipe) {
+    console.log(recipe);
     let title = '';
     let imgUrl = '';
     let ytUrl = '';
@@ -123,9 +147,19 @@ function RecipeDetails() {
           }`}
 
         </p>
-        <button data-testid="share-btn" onClick={ handleShareRecipe }>Share</button>
+        <button
+          data-testid="share-btn"
+          onClick={ handleShareRecipe }
+        >
+          Share
+        </button>
         {isSharedRecipe && <p>Link copied!</p>}
-        <button data-testid="favorite-btn">Favorite</button>
+        <button
+          data-testid="favorite-btn"
+          onClick={ handleFavoriteRecipe }
+        >
+          Favorite
+        </button>
         <img
           src={ imgUrl }
           alt={ title }
