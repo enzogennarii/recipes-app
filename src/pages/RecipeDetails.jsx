@@ -4,6 +4,11 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import copy from 'clipboard-copy';
 import useFetch from '../hooks/useFetch';
 import { RecipeContext } from '../context';
+
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+
 import Recomendations from '../components/Recomendations';
 
 function RecipeDetails() {
@@ -13,9 +18,10 @@ function RecipeDetails() {
 
   const [recipe, setRecipe] = useState(null);
   const [ingredients, setIngredients] = useState([]);
-  const [isNotDoneRecipe, setIsNotDoneRecipe] = useState(null);
+  // const [isNotDoneRecipe, setIsNotDoneRecipe] = useState(null);
   const [isInProgressRecipe, setIsInProgressRecipe] = useState(null);
   const [isSharedRecipe, setIsSharedRecipe] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(null);
 
   const splittedPathName = history.location.pathname.split('/');
   const recipeType = splittedPathName[1];
@@ -50,20 +56,20 @@ function RecipeDetails() {
     setIngredients(ingredientsWithMeasures);
   };
 
-  const handleIsDoneRecipe = () => {
-    const doneRecipesInLS = JSON.parse(localStorage.getItem('doneRecipes'));
-    if (doneRecipesInLS) {
-      let isRecipeInLS = null;
-      if (recipeType === 'meals') {
-        isRecipeInLS = doneRecipesInLS.some(({ id }) => id === recipe.idMeal);
-      } else {
-        isRecipeInLS = doneRecipesInLS.some(({ id }) => id === recipe.idDrink);
-      }
-      setIsNotDoneRecipe(!isRecipeInLS);
-      return;
-    }
-    setIsNotDoneRecipe(true);
-  };
+  // const handleIsDoneRecipe = () => {
+  //   const doneRecipesInLS = JSON.parse(localStorage.getItem('doneRecipes'));
+  //   if (doneRecipesInLS) {
+  //     let isRecipeInLS = null;
+  //     if (recipeType === 'meals') {
+  //       isRecipeInLS = doneRecipesInLS.some(({ id }) => id === recipe.idMeal);
+  //     } else {
+  //       isRecipeInLS = doneRecipesInLS.some(({ id }) => id === recipe.idDrink);
+  //     }
+  //     setIsNotDoneRecipe(!isRecipeInLS);
+  //     return;
+  //   }
+  //   setIsNotDoneRecipe(true);
+  // };
 
   const handleIsInProgressRecipe = () => {
     const inProgressRecipesInLS = JSON.parse(localStorage.getItem('inProgressRecipes'));
@@ -97,15 +103,38 @@ function RecipeDetails() {
       name: recipeType === 'meals' ? recipe.strMeal : recipe.strDrink,
       image: recipeType === 'meals' ? recipe.strMealThumb : recipe.strDrinkThumb,
     };
+
     const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
     if (favoriteRecipes) {
+      const isRecipeFavorited = favoriteRecipes.some(({ id }) => id === recipeId);
+      if (!isRecipeFavorited) {
+        localStorage.setItem(
+          'favoriteRecipes',
+          JSON.stringify([...favoriteRecipes, recipeToFavorite]),
+        );
+        setIsFavorite(true);
+        return;
+      }
+      const favoritesWithoutRecipe = favoriteRecipes
+        .filter(({ id }) => id !== recipeId);
       localStorage.setItem(
         'favoriteRecipes',
-        JSON.stringify([...favoriteRecipes, recipeToFavorite]),
+        JSON.stringify(favoritesWithoutRecipe),
       );
+      setIsFavorite(false);
       return;
     }
+    setIsFavorite(true);
     localStorage.setItem('favoriteRecipes', JSON.stringify([recipeToFavorite]));
+  };
+
+  const handleIsFavorite = () => {
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    let isRecipeFavorited = false;
+    if (favoriteRecipes) {
+      isRecipeFavorited = favoriteRecipes.some(({ id }) => id === recipeId);
+    }
+    setIsFavorite(isRecipeFavorited);
   };
 
   useEffect(() => {
@@ -114,10 +143,11 @@ function RecipeDetails() {
 
   useEffect(() => {
     if (recipe) {
-      handleIsDoneRecipe();
+      // handleIsDoneRecipe();
       handleIsInProgressRecipe();
       filterIngredients();
       fetchRecomendations();
+      handleIsFavorite();
     }
   }, [recipe]);
 
@@ -151,14 +181,15 @@ function RecipeDetails() {
           data-testid="share-btn"
           onClick={ handleShareRecipe }
         >
-          Share
+          <img src={ shareIcon } alt="Share" />
         </button>
         {isSharedRecipe && <p>Link copied!</p>}
         <button
           data-testid="favorite-btn"
           onClick={ handleFavoriteRecipe }
+          src={ isFavorite ? blackHeartIcon : whiteHeartIcon }
         >
-          Favorite
+          <img src={ isFavorite ? blackHeartIcon : whiteHeartIcon } alt="Favorite" />
         </button>
         <img
           src={ imgUrl }

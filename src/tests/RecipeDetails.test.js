@@ -9,6 +9,7 @@ import mealsRecipesMocks from './helpers/mocks/mealsRecipes';
 import drinksRecipesMocks from './helpers/mocks/drinksRecipes';
 import corbaMock from './helpers/mocks/corbaMock';
 import ggMock from './helpers/mocks/ggMock';
+import mockedFavoriteLS from './helpers/mocks/mockedFavoriteLS';
 
 describe('Testes do componente RecipeDetails', () => {
   afterEach(() => jest.clearAllMocks());
@@ -45,10 +46,11 @@ describe('Testes do componente RecipeDetails', () => {
       json: async () => drinksRecipesMocks,
     }));
 
-    renderWithRouter(
+    const { debug } = renderWithRouter(
       <App />,
       { initialEntries: ['/drinks'] },
     );
+    localStorage.clear();
     await waitFor(() => {
       const gg = screen.getByRole('heading', { name: /gg/i });
       userEvent.click(gg);
@@ -60,10 +62,15 @@ describe('Testes do componente RecipeDetails', () => {
       .mockReturnValueOnce(mockResponse(mealsRecipesMocks))
       .mockReturnValueOnce(mockResponse(ggMock));
     global.fetch = mockFetch;
-
     await waitFor(() => {
       screen.getByTestId('instructions');
       screen.getByTestId('0-recommendation-title');
+      // jest.spyOn(Storage.prototype, 'getItem');
+
+      userEvent.click(screen.getByRole('img', { name: /favorite/i }));
+      jest.spyOn(Storage.prototype, 'setItem');
+      expect(localStorage.setItem).toHaveBeenCalled();
+      userEvent.click(screen.getByRole('img', { name: /favorite/i }));
     });
   });
 });
