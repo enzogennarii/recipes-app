@@ -28,6 +28,7 @@ function RecipeCard({ recipe = {}, index = 0 }) {
         <img
           src={ imageRecipe }
           alt={ nameRecipe }
+          className="recipe-img"
           data-testid={ `${index}-card-img` }
         />
       </Link>

@@ -1,3 +1,7 @@
 body {
   height: 100vh;
 }
+
+.recipe-img {
+  width: 200px;
+}
