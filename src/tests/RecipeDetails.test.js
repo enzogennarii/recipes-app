@@ -9,7 +9,7 @@ import mealsRecipesMocks from './helpers/mocks/mealsRecipes';
 import drinksRecipesMocks from './helpers/mocks/drinksRecipes';
 import corbaMock from './helpers/mocks/corbaMock';
 import ggMock from './helpers/mocks/ggMock';
-import mockedFavoriteLS from './helpers/mocks/mockedFavoriteLS';
+// import mockedFavoriteLS from './helpers/mocks/mockedFavoriteLS';
 
 describe('Testes do componente RecipeDetails', () => {
   afterEach(() => jest.clearAllMocks());
@@ -46,7 +46,7 @@ describe('Testes do componente RecipeDetails', () => {
       json: async () => drinksRecipesMocks,
     }));
 
-    const { debug } = renderWithRouter(
+    renderWithRouter(
       <App />,
       { initialEntries: ['/drinks'] },
     );
