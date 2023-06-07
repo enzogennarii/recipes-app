@@ -5,3 +5,23 @@ body {
 .recipe-img {
   width: 200px;
 }
+
+.recomendations {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  width: 80vw;
+}
+
+.recomendation-container {
+  padding: 0 30px;
+}
+
+.recomendation-img {
+  width: 100px;
+}
+
+.start-recipe-btn {
+  bottom: 0;
+  position: fixed;
+}

@@ -1,14 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import useFetch from '../hooks/useFetch';
+import { RecipeContext } from '../context';
+import Recomendations from '../components/Recomendations';
 
 function RecipeDetails() {
   const { fetchData } = useFetch();
   const history = useHistory();
+  const { setPageName, fetchRecomendations } = useContext(RecipeContext);
 
   const [recipe, setRecipe] = useState(null);
   const [ingredients, setIngredients] = useState([]);
+  const [isNotDoneRecipe, setIsNotDoneRecipe] = useState(null);
 
   const splittedPathName = history.location.pathname.split('/');
   const recipeType = splittedPathName[1];
@@ -18,10 +22,12 @@ function RecipeDetails() {
     let URL = '';
     let data = {};
     if (recipeType === 'meals') {
+      setPageName('Meals');
       URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`;
       const result = await fetchData(URL);
       data = result.meals;
     } else {
+      setPageName('Drinks');
       URL = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${recipeId}`;
       const result = await fetchData(URL);
       data = result.drinks;
@@ -41,12 +47,31 @@ function RecipeDetails() {
     setIngredients(ingredientsWithMeasures);
   };
 
+  const handleIsDoneRecipe = () => {
+    const doneRecipesInLS = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (doneRecipesInLS) {
+      let isRecipeInLS = null;
+      if (recipeType === 'meals') {
+        isRecipeInLS = doneRecipesInLS.some(({ id }) => id === recipe.idMeal);
+      } else {
+        isRecipeInLS = doneRecipesInLS.some(({ id }) => id === recipe.idDrink);
+      }
+      setIsNotDoneRecipe(!isRecipeInLS);
+      return;
+    }
+    setIsNotDoneRecipe(true);
+  };
+
   useEffect(() => {
     fetchRecipe();
   }, []);
 
   useEffect(() => {
-    if (recipe) filterIngredients();
+    if (recipe) {
+      handleIsDoneRecipe();
+      filterIngredients();
+      fetchRecomendations();
+    }
   }, [recipe]);
 
   if (recipe) {
@@ -68,7 +93,12 @@ function RecipeDetails() {
     return (
       <div>
         <h2 data-testid="recipe-title">{title}</h2>
-        <p data-testid="recipe-category">{`${strCategory} - ${recipe.strAlcoholic}`}</p>
+        <p data-testid="recipe-category">
+          {`${strCategory}${
+            recipe.strAlcoholic ? ` - ${recipe.strAlcoholic}` : ''
+          }`}
+
+        </p>
         <img
           src={ imgUrl }
           alt={ title }
@@ -91,8 +121,8 @@ function RecipeDetails() {
         {
           recipeType === 'meals' && (
             <iframe
-              width="560"
-              height="315"
+              width="224"
+              height="126"
               src={ ytUrl }
               title="YouTube video player"
               frameBorder="0"
@@ -108,6 +138,15 @@ function RecipeDetails() {
             />
           )
         }
+        <Recomendations />
+        { isNotDoneRecipe && (
+          <button
+            className="start-recipe-btn"
+            data-testid="start-recipe-btn"
+          >
+            Start Recipe
+          </button>
+        )}
       </div>
     );
   }
