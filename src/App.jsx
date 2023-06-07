@@ -20,8 +20,8 @@ function App() {
         <Route exact path="/drinks" component={ Drinks } />
         <Route exact path="/meals/:idMeal" component={ RecipeDetails } />
         <Route exact path="/drinks/:idDrink" component={ RecipeDetails } />
-        {/* <Route path="/meals/:id-da-receita/in-progress" component={} />
-        <Route path="/drinks/:id-da-receita/in-progress" component={} /> */}
+        <Route path="/meals/:id-da-receita/in-progress" component={ RecipeDetails } />
+        <Route path="/drinks/:id-da-receita/in-progress" component={ RecipeDetails } />
         <Route path="/profile" component={ Profile } />
         <Route path="/done-recipes" component={ DoneRecipes } />
         <Route path="/favorite-recipes" component={ FavoriteRecipes } />

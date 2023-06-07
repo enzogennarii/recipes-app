@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import copy from 'clipboard-copy';
 import useFetch from '../hooks/useFetch';
 import { RecipeContext } from '../context';
 import Recomendations from '../components/Recomendations';
@@ -13,6 +14,8 @@ function RecipeDetails() {
   const [recipe, setRecipe] = useState(null);
   const [ingredients, setIngredients] = useState([]);
   const [isNotDoneRecipe, setIsNotDoneRecipe] = useState(null);
+  const [isInProgressRecipe, setIsInProgressRecipe] = useState(null);
+  const [isSharedRecipe, setIsSharedRecipe] = useState(false);
 
   const splittedPathName = history.location.pathname.split('/');
   const recipeType = splittedPathName[1];
@@ -62,6 +65,26 @@ function RecipeDetails() {
     setIsNotDoneRecipe(true);
   };
 
+  const handleIsInProgressRecipe = () => {
+    const inProgressRecipesInLS = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (inProgressRecipesInLS) {
+      let recipeKeys = [];
+      if (recipeType === 'meals') {
+        recipeKeys = Object.keys(inProgressRecipesInLS.meals);
+      } else {
+        recipeKeys = Object.keys(inProgressRecipesInLS.drinks);
+      }
+      const isRecipeInLS = recipeKeys.some((key) => key === recipeId);
+      setIsInProgressRecipe(isRecipeInLS);
+      return;
+    }
+    setIsInProgressRecipe(false);
+  };
+  const handleShareRecipe = () => {
+    const path = 'http://localhost:3000';
+    copy(path + history.location.pathname);
+    setIsSharedRecipe(true);
+  };
   useEffect(() => {
     fetchRecipe();
   }, []);
@@ -69,6 +92,7 @@ function RecipeDetails() {
   useEffect(() => {
     if (recipe) {
       handleIsDoneRecipe();
+      handleIsInProgressRecipe();
       filterIngredients();
       fetchRecomendations();
     }
@@ -99,6 +123,9 @@ function RecipeDetails() {
           }`}
 
         </p>
+        <button data-testid="share-btn" onClick={ handleShareRecipe }>Share</button>
+        {isSharedRecipe && <p>Link copied!</p>}
+        <button data-testid="favorite-btn">Favorite</button>
         <img
           src={ imgUrl }
           alt={ title }
@@ -139,14 +166,14 @@ function RecipeDetails() {
           )
         }
         <Recomendations />
-        { isNotDoneRecipe && (
-          <button
-            className="start-recipe-btn"
-            data-testid="start-recipe-btn"
-          >
-            Start Recipe
-          </button>
-        )}
+        <button
+          className="start-recipe-btn"
+          data-testid="start-recipe-btn"
+          onClick={ () => history.push(`${history.location.pathname}/in-progress`) }
+        >
+          {!isInProgressRecipe ? 'Start Recipe' : 'Continue Recipe'}
+        </button>
+
       </div>
     );
   }
