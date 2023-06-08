@@ -9,10 +9,12 @@ import mealsRecipesMocks from './helpers/mocks/mealsRecipes';
 import drinksRecipesMocks from './helpers/mocks/drinksRecipes';
 import corbaMock from './helpers/mocks/corbaMock';
 import ggMock from './helpers/mocks/ggMock';
-// import mockedFavoriteLS from './helpers/mocks/mockedFavoriteLS';
 
 describe('Testes do componente RecipeDetails', () => {
-  afterEach(() => jest.clearAllMocks());
+  afterEach(() => {
+    jest.clearAllMocks();
+    window.localStorage.clear();
+  });
 
   it('Teste da página da refeição Corba', async () => {
     global.fetch = jest.fn(async () => ({
@@ -50,7 +52,6 @@ describe('Testes do componente RecipeDetails', () => {
       <App />,
       { initialEntries: ['/drinks'] },
     );
-    localStorage.clear();
     await waitFor(() => {
       const gg = screen.getByRole('heading', { name: /gg/i });
       userEvent.click(gg);
@@ -65,12 +66,11 @@ describe('Testes do componente RecipeDetails', () => {
     await waitFor(() => {
       screen.getByTestId('instructions');
       screen.getByTestId('0-recommendation-title');
-      // jest.spyOn(Storage.prototype, 'getItem');
-
       userEvent.click(screen.getByRole('img', { name: /favorite/i }));
       jest.spyOn(Storage.prototype, 'setItem');
       expect(localStorage.setItem).toHaveBeenCalled();
       userEvent.click(screen.getByRole('img', { name: /favorite/i }));
+      userEvent.click(screen.getByRole('button', { name: /start recipe/i }));
     });
   });
 });
