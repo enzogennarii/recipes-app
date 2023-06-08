@@ -5,7 +5,7 @@ import { renderWithRouter } from './helpers/renderWithRouter';
 
 import App from '../App';
 import { drinksCategoriesMocks, mealsCategoriesMocks } from './helpers/mocks/categories';
-import mealsRecipiesMocks from './helpers/mocks/mealsRecipes';
+import mealsRecipesMocks from './helpers/mocks/mealsRecipes';
 import drinksRecipesMocks from './helpers/mocks/drinksRecipes';
 
 describe('Testes do componente Recipes', () => {
@@ -47,14 +47,14 @@ describe('Testes do componente Recipes', () => {
 
   it('Verifica se as receitas da página de Meals são renderizadas', async () => {
     global.fetch = jest.fn(async () => ({
-      json: async () => mealsRecipiesMocks,
+      json: async () => mealsRecipesMocks,
     }));
     renderWithRouter(
       <App />,
       { initialEntries: ['/meals'] },
     );
     await waitFor(() => {
-      mealsRecipiesMocks.meals.forEach((_, index) => {
+      mealsRecipesMocks.meals.forEach((_, index) => {
         const test = screen.getByTestId(`${index}-recipe-card`);
         expect(test).toBeInTheDocument();
       });
@@ -70,7 +70,7 @@ describe('Testes do componente Recipes', () => {
       { initialEntries: ['/drinks'] },
     );
     await waitFor(() => {
-      mealsRecipiesMocks.meals.forEach((_, index) => {
+      mealsRecipesMocks.meals.forEach((_, index) => {
         const test = screen.getByTestId(`${index}-recipe-card`);
         expect(test).toBeInTheDocument();
       });

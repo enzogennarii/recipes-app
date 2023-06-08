@@ -1,4 +1,4 @@
-const mealsRecipiesMocks = {
+const mealsRecipesMocks = {
   meals: [
     {
       idMeal: '52977',
@@ -656,4 +656,4 @@ const mealsRecipiesMocks = {
   ],
 };
 
-export default mealsRecipiesMocks;
+export default mealsRecipesMocks;

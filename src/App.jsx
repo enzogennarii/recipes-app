@@ -10,6 +10,7 @@ import FavoriteRecipes from './pages/FavoriteRecipes';
 
 import './App.css';
 import RecipeDetails from './pages/RecipeDetails';
+import CurrRecipeProvider from './context/CurrRecipeProvider';
 
 function App() {
   return (
@@ -18,13 +19,15 @@ function App() {
         <Route exact path="/" component={ Login } />
         <Route exact path="/meals" component={ Meals } />
         <Route exact path="/drinks" component={ Drinks } />
-        <Route exact path="/meals/:idMeal" component={ RecipeDetails } />
-        <Route exact path="/drinks/:idDrink" component={ RecipeDetails } />
-        {/* <Route path="/meals/:id-da-receita/in-progress" component={} />
-        <Route path="/drinks/:id-da-receita/in-progress" component={} /> */}
         <Route path="/profile" component={ Profile } />
         <Route path="/done-recipes" component={ DoneRecipes } />
         <Route path="/favorite-recipes" component={ FavoriteRecipes } />
+        <CurrRecipeProvider>
+          <Route exact path="/meals/:idMeal" component={ RecipeDetails } />
+          <Route exact path="/drinks/:idDrink" component={ RecipeDetails } />
+          <Route path="/meals/:id-da-receita/in-progress" component={ RecipeDetails } />
+          <Route path="/drinks/:id-da-receita/in-progress" component={ RecipeDetails } />
+        </CurrRecipeProvider>
       </Switch>
     </section>
   );
