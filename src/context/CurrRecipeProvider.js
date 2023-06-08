@@ -8,7 +8,6 @@ import useFetch from '../hooks/useFetch';
 import { CurrRecipeContext } from '.';
 
 function CurrRecipeProvider({ children }) {
-  console.log('currrecipeprovider');
   const [recipe, setRecipe] = useState(null);
   const [ingredients, setIngredients] = useState([]);
   const [recomendations, setRecomendations] = useState([]);
