@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { RecipeContext } from '../context';
+import { CurrRecipeContext } from '../context';
 import RecomendationCard from './RecomendationCard';
 
 function Recomendations() {
-  const { recomendations } = useContext(RecipeContext);
+  const { recomendations } = useContext(CurrRecipeContext);
   return (
     <div className="recomendations">
       {

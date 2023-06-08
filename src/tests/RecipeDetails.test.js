@@ -1,6 +1,7 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import copy from 'clipboard-copy';
 
 import { renderWithRouter } from './helpers/renderWithRouter';
 
@@ -9,6 +10,8 @@ import mealsRecipesMocks from './helpers/mocks/mealsRecipes';
 import drinksRecipesMocks from './helpers/mocks/drinksRecipes';
 import corbaMock from './helpers/mocks/corbaMock';
 import ggMock from './helpers/mocks/ggMock';
+
+jest.mock('clipboard-copy');
 
 describe('Testes do componente RecipeDetails', () => {
   afterEach(() => {
@@ -63,6 +66,7 @@ describe('Testes do componente RecipeDetails', () => {
       .mockReturnValueOnce(mockResponse(mealsRecipesMocks))
       .mockReturnValueOnce(mockResponse(ggMock));
     global.fetch = mockFetch;
+    copy.mockImplementation(() => true);
     await waitFor(() => {
       screen.getByTestId('instructions');
       screen.getByTestId('0-recommendation-title');
@@ -70,6 +74,7 @@ describe('Testes do componente RecipeDetails', () => {
       jest.spyOn(Storage.prototype, 'setItem');
       expect(localStorage.setItem).toHaveBeenCalled();
       userEvent.click(screen.getByRole('img', { name: /favorite/i }));
+      userEvent.click(screen.getByRole('img', { name: /share/i }));
       userEvent.click(screen.getByRole('button', { name: /start recipe/i }));
     });
   });

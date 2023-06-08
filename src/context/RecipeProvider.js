@@ -15,11 +15,9 @@ function RecipeProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currCategory, setCurrCategory] = useState('');
-  const [recomendations, setRecomendations] = useState([]);
 
   const MAX_RECIPES_LENGTH = 12;
   const MAX_CATEGORIES_LENGTH = 5;
-  const MAX_RECOMENDATIONS_LENGTH = 6;
 
   const fetchInitialRecipes = useCallback(async () => {
     let data = [];
@@ -179,25 +177,6 @@ function RecipeProvider({ children }) {
     setRecipes(data);
   }, [fetchData, pageName, currCategory, fetchInitialRecipes]);
 
-  const fetchRecomendations = useCallback(async () => {
-    let data = [];
-    if (pageName === 'Meals') {
-      const URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-      const response = await fetchData(URL);
-      data = response.drinks;
-    }
-
-    if (pageName === 'Drinks') {
-      const URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-      const response = await fetchData(URL);
-      data = response.meals;
-    }
-
-    const slicedRecomendations = data.slice(0, MAX_RECOMENDATIONS_LENGTH);
-
-    setRecomendations(slicedRecomendations);
-  }, [fetchData, pageName]);
-
   useEffect(() => {
     if (pageName) {
       fetchInitialRecipes();
@@ -217,8 +196,6 @@ function RecipeProvider({ children }) {
     categories,
     filterByCategory,
     fetchInitialRecipes,
-    fetchRecomendations,
-    recomendations,
   }), [
     handleSearchRecipe,
     recipes,
@@ -228,8 +205,6 @@ function RecipeProvider({ children }) {
     categories,
     filterByCategory,
     fetchInitialRecipes,
-    fetchRecomendations,
-    recomendations,
   ]);
 
   return (
