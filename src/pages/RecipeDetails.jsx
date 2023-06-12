@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { CurrRecipeContext } from '../context';
 
@@ -7,11 +7,14 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 import Recomendations from '../components/Recomendations';
+import IngredientList from '../components/IngredientList';
 
 function RecipeDetails() {
   const history = useHistory();
   const splittedPathName = history.location.pathname.split('/');
+  const isInProgress = splittedPathName.some((split) => split === 'in-progress');
   const recipeType = splittedPathName[1];
+  const [enableFinish, setEnableFinish] = useState(false);
 
   const {
     recipe,
@@ -27,15 +30,18 @@ function RecipeDetails() {
     let title = '';
     let imgUrl = '';
     let ytUrl = '';
+    let id = '';
     if (recipeType === 'meals') {
-      const { strMealThumb, strMeal, strYoutube } = recipe;
+      const { strMealThumb, strMeal, strYoutube, idMeal } = recipe;
       title = strMeal;
       imgUrl = strMealThumb;
       ytUrl = strYoutube.replace('/watch?v=', '/embed/');
+      id = idMeal;
     } else {
-      const { strDrinkThumb, strDrink } = recipe;
+      const { strDrinkThumb, strDrink, idDrink } = recipe;
       title = strDrink;
       imgUrl = strDrinkThumb;
+      id = idDrink;
     }
     const { strCategory, strInstructions } = recipe;
 
@@ -68,18 +74,13 @@ function RecipeDetails() {
           className="recipe-img"
           data-testid="recipe-photo"
         />
-        <ul>
-          {
-            ingredients.map((ingredient, i) => (
-              <li
-                key={ Math.random() }
-                data-testid={ `${i}-ingredient-name-and-measure` }
-              >
-                {ingredient}
-              </li>
-            ))
-          }
-        </ul>
+        <IngredientList
+          isInProgress={ isInProgress }
+          ingredients={ ingredients }
+          type={ recipeType }
+          id={ id }
+          setEnableFinish={ setEnableFinish }
+        />
         <p data-testid="instructions">{strInstructions}</p>
         {
           recipeType === 'meals' && (
@@ -101,14 +102,31 @@ function RecipeDetails() {
             />
           )
         }
-        <Recomendations />
-        <button
-          className="start-recipe-btn"
-          data-testid="start-recipe-btn"
-          onClick={ () => history.push(`${history.location.pathname}/in-progress`) }
-        >
-          {!isInProgressRecipe ? 'Start Recipe' : 'Continue Recipe'}
-        </button>
+        {
+          isInProgress ? (
+            <div>
+              <button
+                className="start-recipe-btn"
+                data-testid="finish-recipe-btn"
+                disabled={ !enableFinish }
+              >
+                Finish Recipe
+
+              </button>
+            </div>
+          ) : (
+            <div>
+              <Recomendations />
+              <button
+                className="start-recipe-btn"
+                data-testid="start-recipe-btn"
+                onClick={ () => history.push(`${history.location.pathname}/in-progress`) }
+              >
+                {!isInProgressRecipe ? 'Start Recipe' : 'Continue Recipe'}
+              </button>
+            </div>
+          )
+        }
 
       </div>
     );

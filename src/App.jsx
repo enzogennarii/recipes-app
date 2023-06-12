@@ -25,8 +25,8 @@ function App() {
         <CurrRecipeProvider>
           <Route exact path="/meals/:idMeal" component={ RecipeDetails } />
           <Route exact path="/drinks/:idDrink" component={ RecipeDetails } />
-          <Route path="/meals/:id-da-receita/in-progress" component={ RecipeDetails } />
-          <Route path="/drinks/:id-da-receita/in-progress" component={ RecipeDetails } />
+          <Route path="/meals/:idMeal/in-progress" component={ RecipeDetails } />
+          <Route path="/drinks/:idDrink/in-progress" component={ RecipeDetails } />
         </CurrRecipeProvider>
       </Switch>
     </section>

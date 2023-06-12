@@ -103,8 +103,12 @@ function CurrRecipeProvider({ children }) {
   };
 
   const handleShareRecipe = () => {
-    const path = 'http://localhost:3000';
-    copy(path + history.location.pathname);
+    let path = `http://localhost:3000${history.location.pathname}`;
+    const inProgressLength = 12;
+    if (path.includes('in-progress')) {
+      path = path.slice(0, -inProgressLength);
+    }
+    copy(path);
     setIsSharedRecipe(true);
   };
 
