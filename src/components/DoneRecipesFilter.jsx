@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function DoneRecipesFilter({ setFilteredRecipes }) {
   const doneRecipes = [
@@ -64,5 +65,9 @@ function DoneRecipesFilter({ setFilteredRecipes }) {
     </div>
   );
 }
+
+DoneRecipesFilter.propTypes = {
+  setFilteredRecipes: PropTypes.func.isRequired,
+};
 
 export default DoneRecipesFilter;
