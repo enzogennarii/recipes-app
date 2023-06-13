@@ -28,7 +28,6 @@ function DoneRecipesFilter({ setFilteredRecipes }) {
   ];
 
   const handleClickBtn = ({ target }) => {
-    console.log(target.value);
     let filteredRecipes = [];
     if (target.value === 'Meals') {
       filteredRecipes = doneRecipes.filter(({ type }) => type === 'meal');

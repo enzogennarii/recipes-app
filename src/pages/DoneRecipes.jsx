@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import copy from 'clipboard-copy';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+// import copy from 'clipboard-copy';
+// import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import Header from '../components/Header';
 import DoneRecipesFilter from '../components/DoneRecipesFilter';
-import shareIcon from '../images/shareIcon.svg';
+// import shareIcon from '../images/shareIcon.svg';
+import DoneRecipesCard from '../components/DoneRecipesCard';
 
 function DoneRecipes() {
-  const [isSharedRecipe, setIsSharedRecipe] = useState(false);
+  // const [isSharedRecipe, setIsSharedRecipe] = useState(false);
 
   const doneRecipes = [
     {
@@ -35,11 +36,11 @@ function DoneRecipes() {
 
   const [filteredRecipes, setFilteredRecipes] = useState(doneRecipes);
 
-  const handleShareRecipe = (type, id) => {
-    const path = `http://localhost:3000/${type}s/${id}`;
-    copy(path);
-    setIsSharedRecipe(true);
-  };
+  // const handleShareRecipe = (type, id) => {
+  //   const path = `http://localhost:3000/${type}s/${id}`;
+  //   copy(path);
+  //   setIsSharedRecipe(true);
+  // };
 
   return (
     <section className="page-done-recipes">
@@ -47,65 +48,7 @@ function DoneRecipes() {
       <DoneRecipesFilter
         setFilteredRecipes={ setFilteredRecipes }
       />
-      { filteredRecipes.map((recipe, index) => (
-        <div key={ index }>
-          <Link
-            to={ `/${recipe.type}s/${recipe.id}` }
-          >
-            <img
-              data-testid={ `${index}-horizontal-image` }
-              src={ recipe.image }
-              alt={ recipe.name }
-              className="recipe-img"
-            />
-          </Link>
-          <h3
-            data-testid={ `${index}-horizontal-top-text` }
-          >
-            { recipe.type === 'meal' ? (
-              <div>
-                { `${recipe.nationality} - ${recipe.category}` }
-              </div>
-            ) : (
-              <div>
-                { recipe.alcoholicOrNot }
-              </div>
-            ) }
-          </h3>
-          <Link
-            to={ `/${recipe.type}s/${recipe.id}` }
-          >
-            <h3
-              data-testid={ `${index}-horizontal-name` }
-            >
-              { recipe.name }
-            </h3>
-          </Link>
-          <h3
-            data-testid={ `${index}-horizontal-done-date` }
-          >
-            { recipe.doneDate }
-          </h3>
-          <button
-            src={ shareIcon }
-            data-testid={ `${index}-horizontal-share-btn` }
-            onClick={ () => handleShareRecipe(recipe.type, recipe.id) }
-          >
-            Share
-          </button>
-          { isSharedRecipe && (
-            <h3>Link copied!</h3>
-          ) }
-          {recipe.tags.map((tagName) => (
-            <h3
-              key={ tagName }
-              data-testid={ `${index}-${tagName}-horizontal-tag` }
-            >
-              { tagName }
-            </h3>
-          ))}
-        </div>
-      )) }
+      <DoneRecipesCard recipes={ filteredRecipes } />
     </section>
   );
 }
