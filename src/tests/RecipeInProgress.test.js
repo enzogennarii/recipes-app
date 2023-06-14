@@ -13,7 +13,7 @@ import ggMock from './helpers/mocks/ggMock';
 
 jest.mock('clipboard-copy');
 
-describe('Testes do componente RecipeDetails, redirecionado para RecipeInProgress', () => {
+describe('Testes do componente RecipeInProgress', () => {
   afterEach(() => {
     jest.clearAllMocks();
     window.localStorage.clear();

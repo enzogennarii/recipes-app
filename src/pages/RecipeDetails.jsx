@@ -54,7 +54,7 @@ function RecipeDetails() {
         >
           <img src={ shareIcon } alt="Share" />
         </button>
-        {isSharedRecipe && <p>Link copied!</p>}
+        {isSharedRecipe && <p><small>Link copied!</small></p>}
         <button
           data-testid="favorite-btn"
           onClick={ handleFavoriteRecipe }

@@ -19,7 +19,6 @@ export default function IngredientCheckboxList(props) {
     const newArray = ingredients.map(
       (ingredient) => checkIngredientFromLocalStorage(ingredient),
     );
-    console.log(newArray);
     setCheckedIngredients(newArray);
     setEnableFinish(newArray.every((ingredient) => ingredient));
   };

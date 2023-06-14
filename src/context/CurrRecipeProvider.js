@@ -169,7 +169,6 @@ function CurrRecipeProvider({ children }) {
 
   useEffect(() => {
     if (recipe) {
-      // handleIsDoneRecipe();
       handleIsInProgressRecipe();
       handleIngredients();
       fetchRecomendations();
