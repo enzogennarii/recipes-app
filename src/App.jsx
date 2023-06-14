@@ -11,6 +11,7 @@ import FavoriteRecipes from './pages/FavoriteRecipes';
 import './App.css';
 import RecipeDetails from './pages/RecipeDetails';
 import CurrRecipeProvider from './context/CurrRecipeProvider';
+import RecipeInProgress from './pages/RecipeInProgress';
 
 function App() {
   return (
@@ -25,8 +26,8 @@ function App() {
         <CurrRecipeProvider>
           <Route exact path="/meals/:idMeal" component={ RecipeDetails } />
           <Route exact path="/drinks/:idDrink" component={ RecipeDetails } />
-          <Route path="/meals/:id-da-receita/in-progress" component={ RecipeDetails } />
-          <Route path="/drinks/:id-da-receita/in-progress" component={ RecipeDetails } />
+          <Route path="/meals/:idMeal/in-progress" component={ RecipeInProgress } />
+          <Route path="/drinks/:idDrink/in-progress" component={ RecipeInProgress } />
         </CurrRecipeProvider>
       </Switch>
     </section>
