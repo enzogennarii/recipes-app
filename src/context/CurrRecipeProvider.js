@@ -11,7 +11,6 @@ function CurrRecipeProvider({ children }) {
   const [recipe, setRecipe] = useState(null);
   const [ingredients, setIngredients] = useState([]);
   const [recomendations, setRecomendations] = useState([]);
-  // const [isNotDoneRecipe, setIsNotDoneRecipe] = useState(null);
   const [isInProgressRecipe, setIsInProgressRecipe] = useState(null);
   const [isSharedRecipe, setIsSharedRecipe] = useState(false);
   const [isFavorite, setIsFavorite] = useState(null);
@@ -70,21 +69,6 @@ function CurrRecipeProvider({ children }) {
     });
     setIngredients(ingredientsWithMeasures);
   };
-
-  // const handleIsDoneRecipe = () => {
-  //   const doneRecipesInLS = JSON.parse(localStorage.getItem('doneRecipes'));
-  //   if (doneRecipesInLS) {
-  //     let isRecipeInLS = null;
-  //     if (recipeType === 'meals') {
-  //       isRecipeInLS = doneRecipesInLS.some(({ id }) => id === recipe.idMeal);
-  //     } else {
-  //       isRecipeInLS = doneRecipesInLS.some(({ id }) => id === recipe.idDrink);
-  //     }
-  //     setIsNotDoneRecipe(!isRecipeInLS);
-  //     return;
-  //   }
-  //   setIsNotDoneRecipe(true);
-  // };
 
   const handleIsInProgressRecipe = () => {
     const inProgressRecipesInLS = JSON.parse(localStorage.getItem('inProgressRecipes'));
@@ -156,6 +140,29 @@ function CurrRecipeProvider({ children }) {
     setIsFavorite(isRecipeFavorited);
   };
 
+  const handleFinishRecipe = () => {
+    const id = recipeType === 'meals' ? recipe.idMeal : recipe.idDrink;
+
+    const doneRecipesInLS = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+    const isRecipeInLS = doneRecipesInLS.some((currRecipe) => currRecipe.id === id);
+    if (isRecipeInLS) history.push('/done-recipes');
+
+    const doneRecipe = {
+      id,
+      type: recipeType === 'meals' ? 'meal' : 'drink',
+      nationality: recipe.strArea ? recipe.strArea : '',
+      category: recipe.strCategory,
+      alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
+      name: recipeType === 'meals' ? recipe.strMeal : recipe.strDrink,
+      image: recipeType === 'meals' ? recipe.strMealThumb : recipe.strDrinkThumb,
+      doneDate: new Date(),
+      tags: recipe.strTags ? recipe.strTags.split(',') : [],
+    };
+
+    doneRecipesInLS.push(doneRecipe);
+    localStorage.setItem('doneRecipes', JSON.stringify(doneRecipesInLS));
+    history.push('/done-recipes');
+  };
   useEffect(() => {
     fetchRecipe();
   }, []);
@@ -179,6 +186,7 @@ function CurrRecipeProvider({ children }) {
     recomendations,
     handleShareRecipe,
     handleFavoriteRecipe,
+    handleFinishRecipe,
   }), [
     recipe,
     ingredients,
