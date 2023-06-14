@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
 import shareIcon from '../images/shareIcon.svg';
 
-function DoneRecipeCard({
-  index,
-  recipe: {
+function DoneRecipeCard({ index, recipe }) {
+  const {
     id,
     type,
     nationality,
@@ -16,8 +15,8 @@ function DoneRecipeCard({
     image,
     doneDate,
     tags,
-  },
-}) {
+  } = recipe;
+
   const RECIPE_PATH = `/${type}s/${id}`;
 
   const [isSharedRecipe, setIsSharedRecipe] = useState(false);
@@ -31,17 +30,6 @@ function DoneRecipeCard({
   return (
     <div>
       <hr />
-      <Link
-        to={ RECIPE_PATH }
-        data-testid={ `${index}-name-link` }
-      >
-        <h3
-          data-testid={ `${index}-horizontal-name` }
-        >
-          { name }
-        </h3>
-      </Link>
-
       <button
         src={ shareIcon }
         data-testid={ `${index}-horizontal-share-btn` }
@@ -53,6 +41,17 @@ function DoneRecipeCard({
       { isSharedRecipe && (
         <p><small>Link copied!</small></p>
       ) }
+
+      <Link
+        to={ RECIPE_PATH }
+        data-testid={ `${index}-name-link` }
+      >
+        <h3
+          data-testid={ `${index}-horizontal-name` }
+        >
+          { name }
+        </h3>
+      </Link>
 
       <Link
         to={ RECIPE_PATH }
@@ -71,7 +70,8 @@ function DoneRecipeCard({
       >
         { type === 'meal' ? `${nationality} - ${category}` : alcoholicOrNot }
       </p>
-      {tags.length > 0 && <h3>Ingredients:</h3>}
+
+      {tags.length > 0 && <h4>Tags:</h4>}
       {tags.map((tagName) => (
         <p
           key={ tagName }

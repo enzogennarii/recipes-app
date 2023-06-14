@@ -4,27 +4,15 @@ import DoneRecipesFilter from '../components/DoneRecipesFilter';
 import DoneRecipeCard from '../components/DoneRecipeCard';
 
 function DoneRecipes() {
-  const INITIAL_STATE = [{
-    id: '',
-    type: '',
-    nationality: '',
-    category: '',
-    alcoholicOrNot: '',
-    name: '',
-    image: '',
-    doneDate: '',
-    tags: [],
-  }];
-  const [doneRecipes, setDoneRecipes] = useState(INITIAL_STATE);
-  const [filteredRecipes, setFilteredRecipes] = useState(INITIAL_STATE);
+  const [doneRecipes, setDoneRecipes] = useState([]);
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
 
   const getDoneRecipesFromLS = () => {
     const doneRecipesFromLS = (
-      JSON.parse(localStorage.getItem('doneRecipes')) || INITIAL_STATE
+      JSON.parse(localStorage.getItem('doneRecipes')) || []
     );
     setDoneRecipes(doneRecipesFromLS);
     setFilteredRecipes(doneRecipesFromLS);
-    console.log(doneRecipesFromLS);
   };
 
   useEffect(getDoneRecipesFromLS, []);
@@ -32,7 +20,6 @@ function DoneRecipes() {
   return (
     <section className="page-done-recipes">
       <Header title="Done Recipes" />
-      <h1>{doneRecipes[0].name}</h1>
       <DoneRecipesFilter
         setFilteredRecipes={ setFilteredRecipes }
         doneRecipes={ doneRecipes }
